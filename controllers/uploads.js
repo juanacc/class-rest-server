@@ -58,6 +58,25 @@ exports.updateImage = async (req, res = response) => {
     }
 }
 
+exports.showImageBkp = async (req, res =response) => {
+    try {
+        const {collection} = req.params;
+        model = req.object;
+        if(model.img){
+            const imgPath = getImgPath(collection, model.img);
+            console.log(imgPath);
+            if(fs.existsSync(imgPath))
+                return res.sendFile(imgPath);
+        }
+        const defaultImgPath = getDefaultImgPath();
+        res.sendFile(defaultImgPath);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(internalServerError(error))
+    }
+}
+
+// Falta mostrar la imagen de Cloudinary
 exports.showImage = async (req, res =response) => {
     try {
         const {collection} = req.params;
